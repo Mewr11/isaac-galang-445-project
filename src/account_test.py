@@ -11,7 +11,7 @@ class AccountTest(unittest.TestCase):
                                  phone="312-456-7890",
                                  picture="https://example.com/images/john-smith.jpeg")
     
-    # Ensure accounts can be created
+    # Ensure accounts are initialized correctly
     def testNewAccountCanBeCreated(self):
         self.assertEqual(self.a.firstName, "John")
         self.assertEqual(self.a.lastName, "Smith")
@@ -31,22 +31,18 @@ class AccountTest(unittest.TestCase):
         # Teardown to ensure test order doesn't matter
         self.a.isActive = False
 
+    # Ensure
     def testAccountUpdate(self):
-        self.a.update(firstName="Jane")
+        self.a.update("Jane", "Doe", "555-555-1234",
+                      "https://example.com/images/jane-doe.png")
         self.assertEqual(self.a.firstName, "Jane")
-        self.assertEqual(self.a.lastName, "Smith")
-        self.a.update(picture="localhost:5000/pics/example.jpg")
-        self.assertEqual(self.a.picture, "localhost:5000/pics/example.jpg")
-        self.a.update(lastName="Garcia")
-        self.assertEqual(self.a.lastName, "Garcia")
-        self.a.update(phone="555-555-1234")
+        self.assertEqual(self.a.lastName, "Doe")
         self.assertEqual(self.a.phone, "555-555-1234")
-        # Teardown to ensure teset order doesn't matter
-        self.a.update(firstName="John", lastName="Smith",
-                      phone="312-456-7890",
-                      picture="https://example.com/images/john-smith.jpeg")
-        # Also one more test 'cause why not
-        self.assertEqual(self.a.firstName, "John")
+        self.assertEqual(self.a.picture, "https://example.com/images/jane-doe.png")
+        # Teardown to ensure test order doesn't matter
+        self.a.update("John", "Smith", "312-456-7890",
+                      "https://example.com/images/john-smith.jpeg")
+
 
 if __name__ == '__main__':
     unittest.main()
