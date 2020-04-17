@@ -31,7 +31,6 @@ class AccountTest(unittest.TestCase):
         # Teardown to ensure test order doesn't matter
         self.a.isActive = False
 
-    # Ensure
     def testAccountUpdate(self):
         self.a.update("Jane", "Doe", "555-555-1234",
                       "https://example.com/images/jane-doe.png")
@@ -42,6 +41,15 @@ class AccountTest(unittest.TestCase):
         # Teardown to ensure test order doesn't matter
         self.a.update("John", "Smith", "312-456-7890",
                       "https://example.com/images/john-smith.jpeg")
+
+    def testAddRating(self):
+        rid = self.a.addDriverRating("Judger", "Totes a ride", 1, "u suk")
+        rating = self.a.driverRatings[rid]
+        self.assertEqual(rating.rated, self.a)
+        self.assertEqual(rating.rater, "Judger")
+        self.assertEqual(rating.ride, "Totes a ride")
+        self.assertEqual(rating.rating, 1)
+        self.assertEqual(rating.comment, "u suk")
 
 
 if __name__ == '__main__':
