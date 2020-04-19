@@ -60,8 +60,9 @@ class Ride:
         return (self.make, self.model, self.color, self.lpState, self.lpNumber)
 
     def addMessage(self, sender, msg, date):
+        mid = len(self.messages)
         self.messages.append(self.Message(self, sender, msg, date))
-        return len(self.messages) - 1
+        return mid
 
     class Message:
         def __init__(self, ride, poster, message, date):
@@ -71,8 +72,9 @@ class Ride:
             self.date = date
 
     def addJoinRequest(self, requester, passengers):
+        jrid = len(self.joinRequests)
         self.joinRequests.append(self.JoinRequest(self, requester, passengers))
-        return len(self.joinRequests) - 1
+        return jrid
 
     def confirmJoinRequest(self, jri):
         self.joinRequests[jri].confirmed = True
