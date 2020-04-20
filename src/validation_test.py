@@ -16,5 +16,17 @@ class ValidationTest(unittest.TestCase):
         self.assertEqual(validation.name("Prince"), True)
         self.assertEqual(validation.name("Pr1nce"), False)
 
+    def testZipValidation(self):
+        self.assertEqual(validation.zip("53562"), True)
+        self.assertEqual(validation.zip("yolos"), False)
+
+    def testTimeValidation(self):
+        self.assertEqual(validation.time("11:11"), True)
+        self.assertEqual(validation.time("7:11"), False)
+
+    def testStateValidation(self):
+        self.assertEqual(validation.state("FL"), True)
+        self.assertEqual(validation.state("Florida"), False)
+
 if __name__ == "__main__":
     unittest.main()

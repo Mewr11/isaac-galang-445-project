@@ -21,6 +21,8 @@ class SimpleDataHolder(datastorage.DataStorageInterface):
         return aid
 
     def getAccount(self, aid):
+        if(aid < 0 or aid >= len(self.accounts)):
+           return None
         return self.accounts[aid]
 
     def getAllAccounts(self):
@@ -29,6 +31,8 @@ class SimpleDataHolder(datastorage.DataStorageInterface):
                 if self.accounts[i] is not None]
 
     def deleteAccount(self, aid):
+        if(aid < 0 or aid >= len(self.accounts)):
+           return
         self.accounts[aid] = None
 
     def searchAccounts(self, keyword):
@@ -49,6 +53,8 @@ class SimpleDataHolder(datastorage.DataStorageInterface):
         return rid
 
     def getRide(self, rid):
+        if(rid < 0 or rid >= len(self.rides)):
+           return None
         return self.rides[rid]
 
     def getAllRides(self):
@@ -56,6 +62,8 @@ class SimpleDataHolder(datastorage.DataStorageInterface):
                 if self.rides[i] is not None]
 
     def deleteRide(self, rid):
+        if(rid < 0 or rid >= len(self.rides)):
+           return
         self.rides[rid] = None
 
     def searchRide(self, fromKey, toKey, date):
@@ -89,6 +97,8 @@ class SimpleDataHolder(datastorage.DataStorageInterface):
         return jrid
 
     def getJoinRequest(self, jid):
+        if(jid < 0 or jid >= len(self.joinRequests)):
+           return None
         (rid, index) = self.joinRequests[jid]
         return (self.rides[rid], index)
 

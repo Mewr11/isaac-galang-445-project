@@ -5,7 +5,7 @@ class Ride:
                  date, time,
                  make, model, color, lpState, lpNumber,
                  passengers, fare,
-                 conditions, driver):
+                 conditions, driver, datePosted):
         self.fromCity = fromCity
         self.fromZip = fromZip
         self.toCity = toCity
@@ -21,6 +21,7 @@ class Ride:
         self.fare = fare
         self.conditions = conditions
         self.driver = driver
+        self.datePosted = datePosted
         self.messages = []
         self.joinRequests = []
 
@@ -79,6 +80,9 @@ class Ride:
     def confirmJoinRequest(self, jri):
         self.joinRequests[jri].confirmed = True
 
+    def denyJoinRequest(self, jri):
+        self.joinRequests[jri].confirmed = False
+
     def confirmPickup(self, jri):
         if(self.joinRequests[jri].confirmed):
             self.joinRequests[jri].pickup = True
@@ -94,5 +98,5 @@ class Ride:
             self.ride = ride
             self.rider = rider
             self.passengers = passengers
-            self.confirmed = False
-            self.pickup = False
+            self.confirmed = None
+            self.pickup = None

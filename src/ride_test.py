@@ -8,12 +8,12 @@ import account
 
 class RideTest(unittest.TestCase):
     def setUp(self):
-        self.a = account.Account("Bruce", "Banner", "123-456-7890", "Hulk")
+        self.a = account.Account("Bruce", "Banner", "123-456-7890", "Hulk", "date")
         self.r = ride.Ride("Barrington", "60010", "Milwaukee", "53202",
                            "14-Apr-2020", "09:00",
                            "Audi", "A4", "Gray", "IL", "COVID19",
                            2, 15.00,
-                           "Some conditions may apply", self.a)
+                           "Some conditions may apply", self.a, "posting date")
     
     def testNewRideCorrectlyInitialized(self):
         self.assertEqual(self.r.fromCity, "Barrington")
@@ -88,17 +88,17 @@ class RideTest(unittest.TestCase):
     def testConfirmJoinRequest(self):
         jri = self.r.addJoinRequest("Request", 2)
         jr = self.r.joinRequests[jri]
-        self.assertEqual(jr.confirmed, False)
+        self.assertEqual(jr.confirmed, None)
         self.r.confirmJoinRequest(jri)
         self.assertEqual(jr.confirmed, True)
 
     def testConfirmPickup(self):
-        requester = account.Account("Tony", "Stark", "987-654-3210", "Iron")
+        requester = account.Account("Tony", "Stark", "987-654-3210", "Iron", "date")
         jri = self.r.addJoinRequest(requester, 2)
         jr = self.r.joinRequests[jri]
         self.assertEqual(self.r.confirmPickup(jri),
                          "Cannot pick up unconfirmed passenger")
-        self.assertEqual(jr.pickup, False)
+        self.assertEqual(jr.pickup, None)
         self.r.confirmJoinRequest(jri)
         self.r.confirmPickup(jri)
         self.assertEqual(jr.pickup, True)

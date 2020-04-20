@@ -35,10 +35,14 @@ class Account:
         return ratingIndex
 
     def getRiderRatingAverage(self):
+        if(len(self.riderRatings) == 0):
+            return None
         return sum([r.rating
                     for r in self.riderRatings]) / len(self.riderRatings)
 
     def getDriverRatingAverage(self):
+        if(len(self.driverRatings) == 0):
+            return None
         return sum([r.rating
                     for r in self.driverRatings]) / len(self.driverRatings)
 

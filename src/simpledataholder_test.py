@@ -17,7 +17,7 @@ class SimpleDataHolderTest(unittest.TestCase):
                            "30-Apr-2020", "13:00",
                            "Toyota", "Prius", "Silver", "WI", "123-ABC",
                            2, 15.00,
-                           "None", self.a1)
+                           "None", self.a1, "date")
         self.rid = self.sdh.addRide(self.r)
 
     def testCanRetrieveAccount(self):
@@ -34,8 +34,8 @@ class SimpleDataHolderTest(unittest.TestCase):
         self.assertIsNone(self.sdh.getAccount(delAid))
 
     def testCanSearchAccount(self):
-        self.assertEqual(self.sdh.searchAccount("Jane")[0][1], self.a2)
-        self.assertEqual(len(self.sdh.searchAccount("J")), 2)
+        self.assertEqual(self.sdh.searchAccounts("Jane")[0][1], self.a2)
+        self.assertEqual(len(self.sdh.searchAccounts("J")), 2)
 
     def testCanGetRide(self):
         self.assertEqual(self.sdh.getRide(self.rid), self.r)
