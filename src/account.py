@@ -1,11 +1,12 @@
 
 
 class Account:
-    def __init__(self, firstName, lastName, phone, picture):
+    def __init__(self, firstName, lastName, phone, picture, date):
         self.firstName = firstName
         self.lastName = lastName
         self.phone = phone
         self.picture = picture
+        self.dateCreated = date
         self.isActive = False
         self.driverRatings = []
         self.riderRatings = []

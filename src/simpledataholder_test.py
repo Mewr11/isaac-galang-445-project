@@ -8,8 +8,8 @@ class SimpleDataHolderTest(unittest.TestCase):
     def setUp(self):
         self.sdh = simpledataholder.SimpleDataHolder()
         
-        self.a1 = account.Account("John", "Doe", "555-555-1234", "pic")
-        self.a2 = account.Account("Jane", "Foster", "312-456-7890", "ThorPic")
+        self.a1 = account.Account("John", "Doe", "555-555-1234", "pic", "date")
+        self.a2 = account.Account("Jane", "Foster", "312-456-7890", "ThorPic", "date")
         self.did = self.sdh.addAccount(self.a1)
         self.aid = self.sdh.addAccount(self.a2)
 

@@ -9,7 +9,8 @@ class AccountTest(unittest.TestCase):
     def setUp(self):
         self.a = account.Account(firstName="John", lastName="Smith",
                                  phone="312-456-7890",
-                                 picture="https://example.com/images/john-smith.jpeg")
+                                 picture="https://example.com/images/john-smith.jpeg",
+                                 date="20-Apr-2020")
     
     # Ensure accounts are initialized correctly
     def testNewAccountCanBeCreated(self):

@@ -31,7 +31,7 @@ class SimpleDataHolder(datastorage.DataStorageInterface):
     def deleteAccount(self, aid):
         self.accounts[aid] = None
 
-    def searchAccount(self, keyword):
+    def searchAccounts(self, keyword):
         regex = ".*" + keyword.lower() + ".*"
         def searchKeyword(acc):
             foundInPhone = re.search(regex, acc.phone.lower()) is not None

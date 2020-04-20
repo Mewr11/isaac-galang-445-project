@@ -30,6 +30,8 @@ class DataStorageInterface:
         Returns all rides as a list of (rid, ride) tuples
         '''
         pass
+    def deleteRide(self, rid):
+        pass
     def searchRide(self, fromKey, toKey, date):
         '''
         Returns all rides matching the given to and from departing at date as
