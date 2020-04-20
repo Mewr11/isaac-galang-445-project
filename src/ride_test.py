@@ -1,21 +1,19 @@
 '''
 Unit tests for ride.py
-
-I take advantage of python's duck typing to use strings in place of accounts
-  in certain situations. This allows the test suite to not have to import
-  the account.py file
 '''
 
 import unittest
 import ride
+import account
 
 class RideTest(unittest.TestCase):
     def setUp(self):
+        self.a = account.Account("Bruce", "Banner", "123-456-7890", "Hulk")
         self.r = ride.Ride("Barrington", "60010", "Milwaukee", "53202",
                            "14-Apr-2020", "09:00",
                            "Audi", "A4", "Gray", "IL", "COVID19",
                            2, 15.00,
-                           "Some conditions may apply", None)
+                           "Some conditions may apply", self.a)
     
     def testNewRideCorrectlyInitialized(self):
         self.assertEqual(self.r.fromCity, "Barrington")
@@ -95,7 +93,8 @@ class RideTest(unittest.TestCase):
         self.assertEqual(jr.confirmed, True)
 
     def testConfirmPickup(self):
-        jri = self.r.addJoinRequest("Pick me up", 2)
+        requester = account.Account("Tony", "Stark", "987-654-3210", "Iron")
+        jri = self.r.addJoinRequest(requester, 2)
         jr = self.r.joinRequests[jri]
         self.assertEqual(self.r.confirmPickup(jri),
                          "Cannot pick up unconfirmed passenger")
@@ -103,6 +102,8 @@ class RideTest(unittest.TestCase):
         self.r.confirmJoinRequest(jri)
         self.r.confirmPickup(jri)
         self.assertEqual(jr.pickup, True)
+        self.assertEqual(requester.rides, 1)
+        self.assertEqual(self.a.drives, 1)
 
     def testAddMessage(self):
         mid = self.r.addMessage("Sender", "Message", "12-Apr-2020, 17:23:15")

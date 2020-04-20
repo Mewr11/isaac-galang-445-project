@@ -36,12 +36,29 @@ class DataStorageInterface:
           a list of (rid, ride) tuples
         '''
         pass
-    def addMessage(self, rid, sender, message, date):
+    def addMessage(self, rid, aid, message, date):
         pass
-    def getMessage(self, mid):
+    def getMessages(self, rid):
+        '''
+        Returns all messages for the given ride as (mid, aid, index) tuples.
+          Since getMessages takes rid as a parameter, we don't return the
+          ride object like we do with getJoinRequest.
+        '''
         pass
-    def addJoinRequest(self, rid, i):
+    def addJoinRequest(self, rid, sender, passengers):
         pass
     def getJoinRequest(self, jid):
+        '''
+        Returns an ride and an index; the actual join request can be confirmed
+          by calling confirmJoinRequest or confirmPickup with the given index
+        '''
+        pass
+    def addDriverRating(self, aid, raterID, rid, rating, comment):
+        pass
+    def addRiderRating(self, aid, raterID, rid, rating, comment):
+        pass
+    def getDriverRatings(self, aid):
+        pass
+    def getRiderRatings(self, aid):
         pass
     

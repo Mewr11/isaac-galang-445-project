@@ -82,6 +82,8 @@ class Ride:
     def confirmPickup(self, jri):
         if(self.joinRequests[jri].confirmed):
             self.joinRequests[jri].pickup = True
+            self.driver.drives += 1
+            self.joinRequests[jri].rider.rides += 1
             return None
         else:
             return "Cannot pick up unconfirmed passenger"

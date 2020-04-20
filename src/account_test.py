@@ -42,14 +42,22 @@ class AccountTest(unittest.TestCase):
         self.a.update("John", "Smith", "312-456-7890",
                       "https://example.com/images/john-smith.jpeg")
 
-    def testAddRating(self):
-        rid = self.a.addDriverRating("Judger", "Totes a ride", 1, "u suk")
+    def testDriverRating(self):
+        rid = self.a.addDriverRating("Judger", "Totes a ride", 1, "u suk",
+                                     "20-Apr-2020")
         rating = self.a.driverRatings[rid]
         self.assertEqual(rating.rated, self.a)
         self.assertEqual(rating.rater, "Judger")
-        self.assertEqual(rating.ride, "Totes a ride")
-        self.assertEqual(rating.rating, 1)
-        self.assertEqual(rating.comment, "u suk")
+        self.assertEqual(self.a.getDriverRatingAverage(), 1.0)
+        self.assertEqual(self.a.getDriverRatingDetail(rid),
+                         (1, "u suk", "20-Apr-2020"))
+
+    def testRiderRating(self):
+        rid = self.a.addRiderRating("Nice Person", "Ride", 5, "Amazing!",
+                                    "21-Apr-2020")
+        self.assertEqual(self.a.getRiderRatingAverage(), 5.0)
+        self.assertEqual(self.a.getRiderRatingDetail(rid),
+                         (5, "Amazing!", "21-Apr-2020"))
 
 
 if __name__ == '__main__':
