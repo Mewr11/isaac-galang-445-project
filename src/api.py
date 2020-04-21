@@ -262,11 +262,6 @@ def viewAllRides(ds):
             }
         }for r in ds.getAllRides()], 200
 
-def viewRideDetail(ds, rid):
-    if(ds.getRide(rid) is None):
-        return {}, 404
-    return {}, 501
-
 def searchRides(ds, fromKey, toKey, date):
     return [{
         "rid": r[0],
@@ -515,4 +510,17 @@ def viewRideDetail(ds, rid):
         }, 200
 
 def search(ds, key, start, end):
+    return {}, 501
+
+def viewAllReports():
+    return ([{
+        "pid": 0,
+        "name": "Rides posted between two dates"
+        },
+             {
+                 "pid": 1,
+                 "name": "Rides taken between two dates"
+                 }], 200)
+
+def getReport(ds, pid):
     return {}, 501
