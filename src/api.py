@@ -394,3 +394,125 @@ def viewAllRideMessages(ds, rid):
         "body": r.messages[m[2]].message
         }
             for m in msgs], 200
+
+def rate(ds, form, aid):
+    a = ds.getAccount(aid)
+    if(a is None):
+        return {}, 404
+    keys = list(form.keys())
+    if("rid" not in keys or "sent_by_id" not in keys or "rating" not in keys or
+       "comment" not in keys):
+        return dataValidationError("Missing data",
+                                   "/accounts/%d/ratings" % aid)
+    r = ds.getRide(form["rid"])
+    if(r is None):
+        return dataValidationError("Invalid rid",
+                                   "/accounts/%d/ratings" % aid)
+    if(form["rating"] < 1 or form["rating"] > 5):
+        return dataValidationError("Invalid rating",
+                                   "/accounts/%d/ratings" % aid)
+    s = ds.getAccount(form["sent_by_id"])
+    if(s is None):
+        return dataValidationError("Invalid sent_by_id",
+                                   "/accounts/%d/ratings" % aid)
+    date = time.strftime("%d-%b-%Y", time.gmtime())
+    if(a == r.driver):
+        sid = ds.addDriverRating(aid, form["sent_by_id"], form["rid"],
+                                 form["rating"], form["comment"], date)
+    elif(a in r.riders):
+        sid = ds.addRiderRating(aid, form["sent_by_id"], form["rid"],
+                                  form["rating"], form["comment"], date)
+    else:
+        return dataValidationError("This account (%d) didn't create this ride (%d) nor was it a passenger" % (form["sent_by_id"], form["rid"]),
+                                   "/accounts/%d/ratings" % aid)
+    return ({"sid": sid}, 201,
+            {"Location": "/accounts/%d/ratings/%d" % (aid, sid)})
+
+def viewDriverRatings(ds, aid):
+    a = ds.getAccount(aid)
+    if(a is None):
+        return {}, 404
+    details = [{
+        "rid": r[2],
+        "sent_by_id": r[1],
+        "first_name": ds.getAccount(r[1]).firstName,
+        "date": a.getDriverRatingDetail(r[3])[2],
+        "rating": a.getDriverRatingDetail(r[3])[0],
+        "comment": a.getDriverRatingDetail(r[3])[1]
+        }
+               for r in ds.getDriverRatings(aid)]
+    return {
+        "aid": aid,
+        "first_name": a.firstName,
+        "rides": a.drives,
+        "ratings": len(a.driverRatings),
+        "average_rating": a.getDriverRatingAverage(),
+        "detail": details
+        }, 200
+
+def viewRiderRatings(ds, aid):
+    a = ds.getAccount(aid)
+    if(a is None):
+        return {}, 404
+    details = [{
+        "rid": r[2],
+        "sent_by_id": r[1],
+        "first_name": ds.getAccount(r[1]).firstName,
+        "date": a.getRiderRatingDetail(r[3])[2],
+        "rating": a.getRiderRatingDetail(r[3])[0],
+        "comment": a.getRiderRatingDetail(r[3])[1]
+        }
+               for r in ds.getRiderRatings(aid)]
+    return {
+        "aid": aid,
+        "first_name": a.firstName,
+        "rides": a.rides,
+        "ratings": len(a.riderRatings),
+        "average_rating": a.getRiderRatingAverage(),
+        "detail": details
+        }, 200
+
+def viewRideDetail(ds, rid):
+    r = ds.getRide(rid)
+    if(r is None):
+        return {}, 404
+    for acc in ds.getAllAccounts():
+        if(acc[1] == r.driver):
+            aid = acc[0]
+            break
+    comments = [{
+        "rid": rating[2],
+        "date": r.driver.getDriverRatingDetail(rating[3])[2],
+        "rating": r.driver.getDriverRatingDetail(rating[3])[0],
+        "comment": r.driver.getDriverRatingDetail(rating[3])[1]
+        }
+                for rating in ds.getDriverRatings(aid)]
+    return {
+        "rid": rid,
+        "location_info": {
+            "from_city": r.fromCity,
+            "from_zip": r.fromZip,
+            "to_city": r.toCity,
+            "to_zip": r.toZip
+            },
+        "date_time": {
+            "date": r.date,
+            "time": r.time,
+            },
+        "car_info": {
+            "make": r.make,
+            "model": r.model,
+            "color": r.color,
+            "plate_state": r.lpState,
+            "plate_serial": r.lpNumber
+            },
+        "driver": r.driver.firstName,
+        "driver_picture": r.driver.picture,
+        "rides": r.driver.drives,
+        "ratings": len(r.driver.driverRatings),
+        "average_rating": r.driver.getDriverRatingAverage(),
+        "comments_about_driver": comments
+        }, 200
+
+def search(ds, key, start, end):
+    return {}, 501

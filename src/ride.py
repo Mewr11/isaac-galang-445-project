@@ -24,6 +24,7 @@ class Ride:
         self.datePosted = datePosted
         self.messages = []
         self.joinRequests = []
+        self.riders = []
 
     def update(self, fromCity, fromZip, toCity, toZip,
                date, time,
@@ -88,6 +89,7 @@ class Ride:
             self.joinRequests[jri].pickup = True
             self.driver.drives += 1
             self.joinRequests[jri].rider.rides += 1
+            self.riders.append(self.joinRequests[jri].rider)
             return None
         else:
             return "Cannot pick up unconfirmed passenger"
