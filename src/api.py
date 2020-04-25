@@ -14,9 +14,8 @@ def dataValidationError(detail, instance):
         }, 400
 
 def createAccount(ds, form):
-    keys = list(form.keys())
-    if("first_name" not in keys or "last_name" not in keys or
-       "phone" not in keys or "picture" not in keys or"is_active" not in keys):
+    if("first_name" not in form or "last_name" not in form or
+       "phone" not in form or "picture" not in form or "is_active" not in form):
         return dataValidationError("Missing data",
                                    "/accounts")
     if(not validation.name(form["first_name"])):

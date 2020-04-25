@@ -10,21 +10,22 @@ ds = SimpleDataHolder()
 
 class Accounts(Resource):
     def post(self):
-        return api.createAccount(ds, request.form)
+        return api.createAccount(ds, request.get_json())
 
     def get(self):
-        if(request.query_string == ""):
-            return api.getAllAcounts(ds)
+        key = request.args.get("key", "")
+        if(key == ""):
+            return api.getAllAccounts(ds)
         else:
-            return api.searchAccounts(ds, request.args.get("key"))
+            return api.searchAccounts(ds, key)
 
 class AccountStatus(Resource):
     def put(self, aid):
-        return api.activateAccount(ds, request.form, aid)
+        return api.activateAccount(ds, request.get_json(), aid)
 
 class AccountAID(Resource):
     def put(self, aid):
-        return api.updateAccount(ds, request.form, aid)
+        return api.updateAccount(ds, request.get_json(), aid)
 
     def delete(self, aid):
         return api.deleteAccount(ds, aid)
@@ -34,7 +35,7 @@ class AccountAID(Resource):
 
 class Ratings(Resource):
     def post(self, aid):
-        return api.rate(ds, request.form, aid)
+        return api.rate(ds, request.get_json(), aid)
 
 class DriverRatings(Resource):
     def get(self, aid):
@@ -46,19 +47,20 @@ class RiderRatings(Resource):
 
 class Rides(Resource):
     def post(self):
-        return api.createRide(ds, request.form)
+        return api.createRide(ds, request.get_json())
 
     def get(self):
-        if(request.query_string == ""):
+        fromKey = request.args.get("fromKey", "")
+        toKey = request.args.get("toKey", "")
+        date = request.args.get("departure_date", "")
+        if(fromKey == "" and toKey == "" and date == ""):
             return api.viewAllRides(ds)
         else:
-            return api.searchRides(ds, request.args.get("fromkey"),
-                                   request.args.get("tokey"),
-                                   request.args.get("departure_date"))
+            return api.searchRides(ds, fromKey, toKey, date)
 
 class RideRID(Resource):
     def put(self, rid):
-        return api.updateRide(ds, request.form, rid)
+        return api.updateRide(ds, request.get_json(), rid)
 
     def delete(self, rid):
         return api.deleteRide(ds, rid)
@@ -68,19 +70,19 @@ class RideRID(Resource):
 
 class JoinRequests(Resource):
     def post(self, rid):
-        return api.createJoinRequest(ds, request.form, rid)
+        return api.createJoinRequest(ds, request.get_json(), rid)
 
 class JoinRequestJID(Resource):
     def patch(self, rid, jid):
-        keys = list(request.form.keys())
+        keys = list(request.get_json().keys())
         if("ride_confirmed" in keys):
-            return api.confirmJoinRequest(ds, request.form, rid, jid)
+            return api.confirmJoinRequest(ds, request.get_json(), rid, jid)
         elif("pickup_confirmed" in keys):
-            return api.confirmPickup(ds, request.form, rid, jid)
+            return api.confirmPickup(ds, request.get_json(), rid, jid)
 
 class Messages(Resource):
     def post(self, rid):
-        return api.addMessage(ds, request.form, rid)
+        return api.addMessage(ds, request.get_json(), rid)
 
     def get(self, rid):
         return api.viewAllRideMessages(ds, rid)
@@ -91,7 +93,7 @@ class Reports(Resource):
 
 class ReportPID(Resource):
     def get(self, pid):
-        return getReport(ds, pid)
+        return api.getReport(ds, pid)
 
 api_server.add_resource(Accounts,
                         "/sar/accounts")

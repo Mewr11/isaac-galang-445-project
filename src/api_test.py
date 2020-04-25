@@ -393,7 +393,7 @@ class APIRatingTest(unittest.TestCase):
         self.assertEqual(rideDetail[0]["average_rating"], 5)
 
     def testSearch(self):
-        response = api.search(ds, "", "20-Apr-2020", "20-May-2020")
+        response = api.search(self.ds, "", "20-Apr-2020", "20-May-2020")
         self.assertEqual(response[1], 501)
         
 
