@@ -55,9 +55,9 @@ class DataStorageInterface:
           by calling confirmJoinRequest or confirmPickup with the given index
         '''
         pass
-    def addDriverRating(self, aid, raterID, rid, rating, comment):
+    def addDriverRating(self, aid, raterID, rid, rating, comment, date):
         pass
-    def addRiderRating(self, aid, raterID, rid, rating, comment):
+    def addRiderRating(self, aid, raterID, rid, rating, comment, date):
         pass
     def getDriverRatings(self, aid):
         pass

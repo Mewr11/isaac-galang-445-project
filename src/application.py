@@ -47,6 +47,7 @@ class RiderRatings(Resource):
 
 class Rides(Resource):
     def post(self):
+        print("got to resource")
         return api.createRide(ds, request.get_json())
 
     def get(self):
@@ -57,6 +58,7 @@ class Rides(Resource):
             return api.viewAllRides(ds)
         else:
             return api.searchRides(ds, fromKey, toKey, date)
+        return {}, 501
 
 class RideRID(Resource):
     def put(self, rid):
@@ -93,7 +95,9 @@ class Reports(Resource):
 
 class ReportPID(Resource):
     def get(self, pid):
-        return api.getReport(ds, pid)
+        startDate = request.args.get("start_date", "")
+        endDate = request.args.get("end_date", "")
+        return api.getReport(ds, pid, startDate, endDate)
 
 api_server.add_resource(Accounts,
                         "/sar/accounts")
