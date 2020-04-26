@@ -367,7 +367,7 @@ class APIRatingTest(unittest.TestCase):
         api.confirmPickup(self.ds, {
             "aid": 1,
             "pickup_confirmed": True
-            }, 0, 1)
+            }, 0, 0)
 
     def testRatings(self):
         driverRatingResponse = api.rate(self.ds, {
